@@ -1,0 +1,940 @@
+/* ==========================================================================
+   [BUSINESS NAME] — site styles
+
+   Palette (six values, used nowhere else):
+     --paper   bright off-white with a cool cast — laundered linen, morning light
+     --linen   pure white — cards, the report
+     --ink     deep slate — text
+     --slate   cool grey-blue — secondary text
+     --tide    cool mid-tone blue — links, buttons
+     --signal  warm amber-rust — RESERVED for timestamps and flagged issues only
+
+   Type:
+     text     Inter — headings and body, weight does the contrast
+     mono     IBM Plex Mono — timestamps, prices, data (the "logged record" voice)
+   ========================================================================== */
+
+/* ---------- Tokens ---------- */
+:root {
+  --paper:  #F3F7F9;
+  --linen:  #FFFFFF;
+  --ink:    #1B2A33;
+  --slate:  #4E6470;
+  --tide:   #26637E;
+  --signal: #B14E14;
+
+  --font-display: "Inter", system-ui, -apple-system, "Segoe UI", sans-serif;
+  --font-body: "Inter", system-ui, -apple-system, "Segoe UI", sans-serif;
+  --font-mono: "IBM Plex Mono", ui-monospace, "SF Mono", Menlo, Consolas, monospace;
+
+  /* Type scale */
+  --step-0: clamp(1.0625rem, 1rem + 0.25vw, 1.1875rem);
+  --step-1: clamp(1.1875rem, 1.1rem + 0.4vw, 1.375rem);
+  --step-2: clamp(1.5rem, 1.35rem + 0.8vw, 1.9375rem);
+  --step-3: clamp(1.9375rem, 1.6rem + 1.5vw, 2.75rem);
+  --step-4: clamp(2.375rem, 1.8rem + 3vw, 4rem);
+
+  /* Derived, not new palette entries */
+  --rule: color-mix(in srgb, var(--slate) 22%, var(--paper));
+  --tint: color-mix(in srgb, var(--tide) 7%, var(--paper));
+}
+
+/* ---------- Reset & base ---------- */
+*, *::before, *::after { box-sizing: border-box; margin: 0; }
+
+html { scroll-behavior: smooth; scroll-padding-top: 5rem; }
+
+body {
+  font-family: var(--font-body);
+  font-size: var(--step-0);
+  line-height: 1.6;
+  color: var(--ink);
+  background: var(--paper);
+  -webkit-font-smoothing: antialiased;
+}
+
+h1, h2, h3, h4 {
+  font-family: var(--font-display);
+  font-weight: 700;
+  line-height: 1.15;
+  letter-spacing: -0.015em;
+  text-wrap: balance;
+}
+
+h2 { font-size: var(--step-3); margin-bottom: 0.75rem; }
+h3 { font-size: var(--step-1); }
+
+p { max-width: 62ch; }
+
+a { color: var(--tide); }
+
+a:focus-visible, button:focus-visible,
+input:focus-visible, select:focus-visible, textarea:focus-visible {
+  outline: 3px solid var(--tide);
+  outline-offset: 2px;
+  border-radius: 4px;
+}
+
+img, svg { max-width: 100%; height: auto; }
+
+.wrap {
+  max-width: 68rem;
+  margin-inline: auto;
+  padding-inline: clamp(1.125rem, 4vw, 2rem);
+}
+
+.mono {
+  font-family: var(--font-mono);
+  font-variant-numeric: tabular-nums;
+  letter-spacing: -0.02em;
+}
+
+.section-lead {
+  font-size: var(--step-1);
+  color: var(--slate);
+  margin-bottom: 2rem;
+}
+
+.visually-hidden {
+  position: absolute;
+  width: 1px; height: 1px;
+  padding: 0; margin: -1px;
+  overflow: hidden;
+  clip: rect(0 0 0 0);
+  white-space: nowrap;
+  border: 0;
+}
+
+section { padding-block: clamp(3.5rem, 8vw, 6rem); }
+
+/* ---------- Buttons ---------- */
+.button {
+  display: inline-block;
+  font-family: var(--font-body);
+  font-weight: 600;
+  font-size: 1rem;
+  text-decoration: none;
+  border: 2px solid var(--tide);
+  border-radius: 8px;
+  padding: 0.6rem 1.3rem;
+  cursor: pointer;
+  transition: background-color 120ms ease, color 120ms ease;
+}
+
+.button--primary {
+  background: var(--tide);
+  color: var(--linen);
+}
+
+.button--primary:hover {
+  background: color-mix(in srgb, var(--tide) 82%, var(--ink));
+  border-color: color-mix(in srgb, var(--tide) 82%, var(--ink));
+}
+
+.button--large {
+  font-size: var(--step-1);
+  padding: 0.8rem 1.8rem;
+}
+
+.phone-link {
+  font-family: var(--font-mono);
+  font-weight: 500;
+  color: var(--ink);
+  text-decoration: none;
+  white-space: nowrap;
+}
+
+.phone-link:hover { text-decoration: underline; }
+
+.phone-link--large { font-size: var(--step-1); }
+
+/* ---------- Header ---------- */
+.site-header {
+  position: sticky;
+  top: 0;
+  z-index: 10;
+  background: color-mix(in srgb, var(--paper) 92%, transparent);
+  backdrop-filter: blur(8px);
+  border-bottom: 1px solid var(--rule);
+}
+
+.site-header__inner {
+  display: flex;
+  align-items: center;
+  gap: 1.5rem;
+  padding-block: 0.85rem;
+}
+
+.wordmark {
+  font-family: var(--font-display);
+  font-weight: 800;
+  font-size: 1.2rem;
+  color: var(--ink);
+  text-decoration: none;
+  letter-spacing: -0.01em;
+}
+
+.site-nav {
+  display: flex;
+  gap: 1.4rem;
+  margin-inline: auto;
+}
+
+.site-nav a {
+  color: var(--slate);
+  text-decoration: none;
+  font-weight: 600;
+  font-size: 0.95rem;
+}
+
+.site-nav a:hover { color: var(--ink); }
+
+.site-header__actions {
+  display: flex;
+  align-items: center;
+  gap: 1.1rem;
+  margin-left: auto;
+}
+
+.nav-toggle {
+  display: none;
+  font: inherit;
+  font-weight: 600;
+  background: none;
+  border: 1px solid var(--rule);
+  border-radius: 8px;
+  padding: 0.45rem 0.8rem;
+  color: var(--ink);
+  cursor: pointer;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.nav-toggle__bar {
+  display: inline-block;
+  width: 16px;
+  height: 2px;
+  background: var(--ink);
+  box-shadow: 0 5px 0 var(--ink), 0 -5px 0 var(--ink);
+}
+
+/* ---------- Hero ---------- */
+.hero {
+  padding-top: clamp(3rem, 7vw, 5.5rem);
+  background:
+    linear-gradient(180deg,
+      color-mix(in srgb, var(--tide) 6%, var(--paper)) 0%,
+      var(--paper) 55%);
+}
+
+.hero__title {
+  font-size: var(--step-4);
+  font-weight: 800;
+  max-width: 21ch;
+  margin-bottom: 1.25rem;
+}
+
+.hero__lead {
+  font-size: var(--step-1);
+  color: var(--slate);
+  margin-bottom: 1.25rem;
+}
+
+.hero__payoff {
+  font-size: var(--step-1);
+  border-left: 4px solid var(--tide);
+  padding: 0.5rem 0 0.5rem 1.1rem;
+  margin-bottom: 2rem;
+  max-width: 52ch;
+}
+
+.hero__cta {
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 1.25rem;
+  margin-bottom: clamp(3rem, 6vw, 4.5rem);
+}
+
+/* ---------- The changeover timeline (signature element) ---------- */
+.timeline {
+  background: var(--linen);
+  border: 1px solid var(--rule);
+  border-radius: 14px;
+  padding: clamp(1.5rem, 3vw, 2.5rem);
+  margin-bottom: clamp(-2.5rem, -4vw, -3.5rem); /* overlaps into next section */
+  position: relative;
+  z-index: 1;
+  box-shadow: 0 12px 40px -18px color-mix(in srgb, var(--ink) 30%, transparent);
+}
+
+.timeline__caption {
+  color: var(--slate);
+  font-size: 0.95rem;
+  margin-bottom: 2rem;
+}
+
+.timeline__caption .mono { color: var(--signal); font-weight: 500; }
+
+.timeline__stops {
+  list-style: none;
+  padding: 0;
+  display: grid;
+  grid-template-columns: repeat(8, 1fr);
+  gap: 0.75rem;
+  position: relative;
+}
+
+/* the track — vertically centred on the row of dots */
+.timeline__stops::before {
+  content: "";
+  position: absolute;
+  top: 0.45rem;
+  left: 6%;
+  right: 6%;
+  height: 3px;
+  background: var(--rule);
+  border-radius: 2px;
+}
+
+/* the progress line — starts hidden only when JS is running (html.js),
+   so the timeline is complete for no-JS visitors */
+html.js .timeline__stops::after {
+  transform: scaleX(0);
+  transform-origin: left center;
+  transition: transform 1600ms cubic-bezier(0.4, 0, 0.2, 1) 300ms;
+}
+
+.timeline__stops::after {
+  content: "";
+  position: absolute;
+  top: 0.45rem;
+  left: 6%;
+  width: 88%;
+  height: 3px;
+  background: var(--tide);
+  border-radius: 2px;
+}
+
+.timeline.is-visible .timeline__stops::after { transform: scaleX(1); }
+
+.stop {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+  gap: 0.4rem;
+}
+
+/* stops start hidden only when JS is running, so no-JS visitors see everything */
+html.js .stop {
+  opacity: 0;
+  transform: translateY(8px);
+  transition: opacity 500ms ease, transform 500ms ease;
+}
+
+/* staggered reveal, paced with the progress line */
+.timeline.is-visible .stop { opacity: 1; transform: none; }
+.timeline.is-visible .stop:nth-child(1) { transition-delay: 250ms; }
+.timeline.is-visible .stop:nth-child(2) { transition-delay: 450ms; }
+.timeline.is-visible .stop:nth-child(3) { transition-delay: 650ms; }
+.timeline.is-visible .stop:nth-child(4) { transition-delay: 850ms; }
+.timeline.is-visible .stop:nth-child(5) { transition-delay: 1050ms; }
+.timeline.is-visible .stop:nth-child(6) { transition-delay: 1250ms; }
+.timeline.is-visible .stop:nth-child(7) { transition-delay: 1450ms; }
+.timeline.is-visible .stop:nth-child(8) { transition-delay: 1650ms; }
+
+.stop__time {
+  color: var(--signal);
+  font-weight: 500;
+  font-size: 0.95rem;
+}
+
+/* the dot, sitting on the track */
+.stop::before {
+  content: "";
+  width: 11px;
+  height: 11px;
+  border-radius: 50%;
+  background: var(--tide);
+  border: 2px solid var(--linen);
+  z-index: 1;
+}
+
+.stop--report::before { background: var(--signal); }
+
+.stop--end::before {
+  background: var(--ink);
+  width: 13px;
+  height: 13px;
+}
+
+.stop__label {
+  font-size: 0.85rem;
+  line-height: 1.35;
+  color: var(--slate);
+  max-width: 11ch;
+}
+
+.stop--report .stop__label,
+.stop--end .stop__label {
+  color: var(--ink);
+  font-weight: 600;
+}
+
+/* ---------- The two problems ---------- */
+.problems {
+  background: var(--tint);
+  padding-top: clamp(6rem, 10vw, 8.5rem); /* room for the overlapping timeline */
+}
+
+.problems__grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 1.5rem;
+  margin-top: 2rem;
+}
+
+.problem-card {
+  background: var(--linen);
+  border: 1px solid var(--rule);
+  border-radius: 14px;
+  padding: 1.75rem;
+}
+
+.problem-card h3 { margin-bottom: 0.75rem; }
+.problem-card p { color: var(--slate); }
+
+/* ---------- What happens at a changeover ---------- */
+.checklist {
+  list-style: none;
+  padding: 0;
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 0.9rem 2.5rem;
+  max-width: 60rem;
+}
+
+.checklist li {
+  position: relative;
+  padding-left: 2rem;
+}
+
+.checklist li::before {
+  content: "";
+  position: absolute;
+  left: 0;
+  top: 0.35em;
+  width: 1.05rem;
+  height: 1.05rem;
+  border-radius: 5px;
+  background: var(--tide);
+  /* white tick */
+  clip-path: none;
+}
+
+.checklist li::after {
+  content: "";
+  position: absolute;
+  left: 0.26rem;
+  top: 0.62em;
+  width: 0.5rem;
+  height: 0.28rem;
+  border-left: 2.5px solid var(--linen);
+  border-bottom: 2.5px solid var(--linen);
+  transform: rotate(-45deg);
+}
+
+/* the final, signature item */
+.checklist li:last-child {
+  grid-column: 1 / -1;
+  font-weight: 600;
+}
+
+.checklist li:last-child::before { background: var(--signal); }
+
+/* ---------- The photo report ---------- */
+.report { background: var(--ink); color: var(--paper); }
+
+.report h2 { color: var(--linen); }
+
+.report__grid {
+  display: grid;
+  grid-template-columns: 1.05fr 1fr;
+  gap: clamp(2rem, 5vw, 4rem);
+  align-items: center;
+}
+
+.report__copy p {
+  color: color-mix(in srgb, var(--paper) 82%, var(--ink));
+  margin-bottom: 1rem;
+}
+
+.report__copy p:last-child {
+  color: var(--linen);
+  font-weight: 600;
+}
+
+/* the mock report document */
+.report-mock {
+  background: var(--linen);
+  border-radius: 14px;
+  padding: 1.4rem;
+  color: var(--ink);
+  box-shadow: 0 24px 60px -24px rgb(0 0 0 / 0.5);
+}
+
+.report-mock__header {
+  display: flex;
+  justify-content: space-between;
+  font-size: 0.85rem;
+  letter-spacing: 0.08em;
+  color: var(--slate);
+  border-bottom: 1px solid var(--rule);
+  padding-bottom: 0.8rem;
+  margin-bottom: 1rem;
+}
+
+.report-mock__stamp { color: var(--signal); }
+
+.report-mock__tiles {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 0.9rem;
+}
+
+.report-tile {
+  border: 1px solid var(--rule);
+  border-radius: 10px;
+  padding: 0.75rem;
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+}
+
+.report-tile svg {
+  width: 100%;
+  background: var(--tint);
+  border-radius: 6px;
+  fill: none;
+  stroke: var(--slate);
+  stroke-width: 2.5;
+  stroke-linejoin: round;
+}
+
+.report-tile__caption {
+  font-size: 0.85rem;
+  color: var(--slate);
+  display: flex;
+  gap: 0.5rem;
+}
+
+.stamp { color: var(--signal); font-size: 0.85rem; }
+
+.report-tile--flagged { border-color: var(--signal); }
+
+.report-tile__flag {
+  font-size: 0.72rem;
+  color: var(--signal);
+  letter-spacing: 0.04em;
+}
+
+/* ---------- Pricing ---------- */
+.pricing__tables {
+  display: grid;
+  gap: 1.5rem;
+}
+
+.price-block {
+  background: var(--linen);
+  border: 1px solid var(--rule);
+  border-radius: 14px;
+  padding: clamp(1.5rem, 3vw, 2.25rem);
+}
+
+.price-block h3 { margin-bottom: 1.25rem; }
+
+/* the headline changeover table stays narrow enough to scan */
+.price-block > table { max-width: 34rem; }
+
+.price-block table, .ledger {
+  width: 100%;
+  border-collapse: collapse;
+}
+
+.price-block th, .ledger th {
+  text-align: left;
+  font-weight: 400;
+  padding: 0.65rem 1rem 0.65rem 0;
+  border-bottom: 1px solid var(--rule);
+  vertical-align: baseline;
+}
+
+.price-block td, .ledger td {
+  text-align: right;
+  font-weight: 500;
+  padding: 0.65rem 0;
+  border-bottom: 1px solid var(--rule);
+  white-space: nowrap;
+  vertical-align: baseline;
+}
+
+.price-block tr:last-child th, .price-block tr:last-child td,
+.ledger tr:last-child th, .ledger tr:last-child td { border-bottom: 0; }
+
+/* grouped add-on lists — one clean row per item: label left, price right */
+.addon-groups {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 2rem;
+}
+
+.addon-group h4 {
+  font-size: 1rem;
+  margin-bottom: 0.6rem;
+  padding-bottom: 0.5rem;
+  border-bottom: 2px solid var(--rule);
+}
+
+.price-list {
+  list-style: none;
+  padding: 0;
+}
+
+.price-list > li {
+  display: flex;
+  justify-content: space-between;
+  align-items: baseline;
+  gap: 1rem;
+  padding-block: 0.55rem;
+}
+
+.price-list > li + li { border-top: 1px solid var(--rule); }
+
+.price-list .price {
+  white-space: nowrap;
+  font-weight: 500;
+}
+
+.price-list .price small {
+  font-family: var(--font-body);
+  font-size: 0.8rem;
+  color: var(--slate);
+}
+
+/* quiet clarifying line under an item */
+.price-list__sub {
+  display: block;
+  font-size: 0.85rem;
+  color: var(--slate);
+  padding-top: 0 !important;
+  margin-top: -0.35rem;
+  border-top: 0 !important;
+}
+
+/* surcharges: same list, kept narrow so it reads as a short bill */
+.price-list--surcharges { max-width: 36rem; }
+
+.price-block__note {
+  margin-top: 1rem;
+  font-weight: 600;
+}
+
+/* ---------- Service levels & worked example ---------- */
+.levels { background: var(--tint); }
+
+.levels__grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 1.5rem;
+  margin-bottom: 2rem;
+}
+
+.level-card {
+  background: var(--linen);
+  border: 1px solid var(--rule);
+  border-radius: 14px;
+  padding: 1.75rem;
+}
+
+.level-card--managed { border: 2px solid var(--tide); }
+
+.level-card__name { margin-bottom: 0.25rem; }
+
+.level-card__price {
+  font-size: var(--step-1);
+  margin-bottom: 1.25rem;
+}
+
+.level-card ul {
+  list-style: none;
+  padding: 0;
+  display: grid;
+  gap: 0.6rem;
+}
+
+.level-card li {
+  padding-left: 1.4rem;
+  position: relative;
+  color: var(--slate);
+}
+
+.level-card li::before {
+  content: "—";
+  position: absolute;
+  left: 0;
+  color: var(--tide);
+}
+
+.worked-example {
+  background: var(--linen);
+  border: 1px solid var(--rule);
+  border-radius: 14px;
+  padding: 1.75rem;
+  max-width: 34rem;
+}
+
+.worked-example h3 { margin-bottom: 0.5rem; }
+.worked-example > p { margin-bottom: 1rem; }
+
+.ledger { margin-bottom: 1rem; }
+
+.ledger__result th, .ledger__result td {
+  font-weight: 700;
+  border-top: 2px solid var(--ink);
+}
+
+.ledger__result + .ledger__result th,
+.ledger__result + .ledger__result td { border-top: 0; }
+
+.worked-example__note {
+  font-size: 0.9rem;
+  color: var(--slate);
+}
+
+/* ---------- Coverage ---------- */
+.coverage p { font-size: var(--step-1); color: var(--slate); }
+
+/* ---------- Quote form ---------- */
+.quote { background: var(--tint); }
+
+.quote__grid {
+  display: grid;
+  grid-template-columns: 1fr 1.4fr;
+  gap: clamp(2rem, 5vw, 4rem);
+  align-items: start;
+}
+
+.quote__intro p { color: var(--slate); margin-bottom: 1rem; }
+
+.quote__phone { margin-top: 2rem; }
+
+.quote-form {
+  background: var(--linen);
+  border: 1px solid var(--rule);
+  border-radius: 14px;
+  padding: clamp(1.5rem, 3vw, 2.25rem);
+  display: grid;
+  gap: 1.1rem;
+}
+
+.field-row {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 1.1rem;
+}
+
+.field { display: grid; gap: 0.3rem; }
+
+.field label {
+  font-weight: 600;
+  font-size: 0.95rem;
+}
+
+.field__optional { font-weight: 400; color: var(--slate); }
+
+.field input, .field select, .field textarea {
+  font: inherit;
+  color: var(--ink);
+  background: var(--paper);
+  border: 1px solid color-mix(in srgb, var(--slate) 45%, var(--paper));
+  border-radius: 8px;
+  padding: 0.6rem 0.75rem;
+  width: 100%;
+}
+
+.field textarea { resize: vertical; }
+
+.field.has-error input, .field.has-error select {
+  border-color: var(--signal);
+  border-width: 2px;
+}
+
+.field__error {
+  color: var(--signal);
+  font-size: 0.88rem;
+  font-weight: 600;
+  min-height: 0;
+  margin: 0;
+}
+
+.field__error:empty { display: none; }
+
+.form-error {
+  color: var(--signal);
+  font-weight: 600;
+  border: 2px solid var(--signal);
+  border-radius: 8px;
+  padding: 0.75rem 1rem;
+}
+
+/* honeypot — off-screen for humans, present for bots */
+.hp-field {
+  position: absolute;
+  left: -9999px;
+  width: 1px;
+  height: 1px;
+  overflow: hidden;
+}
+
+.quote-success {
+  grid-column: 2;
+  background: var(--linen);
+  border: 2px solid var(--tide);
+  border-radius: 14px;
+  padding: 2rem;
+}
+
+.quote-success h3 { margin-bottom: 0.5rem; }
+
+/* ---------- Footer ---------- */
+.site-footer {
+  background: var(--ink);
+  color: color-mix(in srgb, var(--paper) 82%, var(--ink));
+  padding-block: 3rem 2rem;
+}
+
+.site-footer a { color: var(--paper); }
+
+.site-footer .phone-link { color: var(--paper); }
+
+.site-footer__grid {
+  display: grid;
+  grid-template-columns: 1fr auto;
+  gap: 2rem;
+  margin-bottom: 2rem;
+}
+
+.wordmark--footer { color: var(--linen); margin-bottom: 0.5rem; }
+
+.site-footer__legal {
+  font-size: 0.9rem;
+  border-top: 1px solid color-mix(in srgb, var(--paper) 18%, var(--ink));
+  padding-top: 1.5rem;
+  max-width: none;
+}
+
+/* ---------- Responsive ---------- */
+@media (max-width: 860px) {
+  .site-nav {
+    display: none;
+    position: absolute;
+    top: 100%;
+    left: 0;
+    right: 0;
+    flex-direction: column;
+    gap: 0;
+    background: var(--paper);
+    border-bottom: 1px solid var(--rule);
+    padding: 0.5rem 1.125rem 1rem;
+  }
+
+  .site-nav.is-open { display: flex; }
+
+  .site-nav a { padding: 0.7rem 0; }
+
+  .nav-toggle { display: inline-flex; }
+
+  .site-header .button { display: none; }
+
+  .problems__grid,
+  .checklist,
+  .report__grid,
+  .addon-groups,
+  .levels__grid,
+  .quote__grid { grid-template-columns: 1fr; }
+
+  .quote-success { grid-column: 1; }
+
+  /* timeline goes vertical */
+  .timeline__stops {
+    grid-template-columns: 1fr;
+    gap: 1.4rem;
+  }
+
+  .timeline__stops::before,
+  .timeline__stops::after {
+    top: 0.5rem;
+    bottom: 0.5rem;
+    left: 0.95rem;
+    right: auto;
+    width: 3px;
+    height: auto;
+  }
+
+  html.js .timeline__stops::after {
+    transform: scaleY(0);
+    transform-origin: top center;
+  }
+
+  .timeline.is-visible .timeline__stops::after { transform: scaleY(1); }
+
+  .stop {
+    flex-direction: row;
+    text-align: left;
+    align-items: baseline;
+    gap: 0.9rem;
+  }
+
+  .stop::before {
+    order: -1;
+    flex-shrink: 0;
+    align-self: center;
+    position: relative;
+    z-index: 1;
+    margin-left: 0.35rem;
+  }
+
+  .stop__time { min-width: 3.4rem; }
+
+  .stop__label { max-width: none; }
+}
+
+@media (max-width: 480px) {
+  .field-row { grid-template-columns: 1fr; }
+
+  .site-footer__grid { grid-template-columns: 1fr; }
+
+  .report-mock__tiles { grid-template-columns: 1fr; }
+}
+
+/* ---------- Reduced motion ---------- */
+@media (prefers-reduced-motion: reduce) {
+  html { scroll-behavior: auto; }
+
+  html.js .timeline__stops::after,
+  .timeline.is-visible .timeline__stops::after {
+    transition: none;
+    transform: none;
+  }
+
+  html.js .stop,
+  .timeline.is-visible .stop {
+    opacity: 1;
+    transform: none;
+    transition: none;
+    transition-delay: 0ms;
+  }
+
+  .button { transition: none; }
+}
